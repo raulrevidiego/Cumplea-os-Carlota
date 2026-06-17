@@ -1,0 +1,340 @@
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --sunset-deep:   #1a0a00;
+  --sunset-night:  #2b0e0e;
+  --sunset-dark:   #5c1e0e;
+  --sunset-burnt:  #8b3a1a;
+  --sunset-amber:  #c0602a;
+  --sunset-orange: #e08040;
+  --sunset-peach:  #f0a86a;
+  --sunset-cream:  #fce8c8;
+  --sunset-gold:   #f5c97a;
+  --sunset-pink:   #e87070;
+  --sunset-rose:   #c45a6a;
+  --sunset-lilac:  #8a6090;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'Jost', sans-serif;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  background-color: var(--sunset-deep);
+  color: var(--sunset-cream);
+  font-family: var(--serif);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ── CANVAS DE ESTRELLAS ── */
+#sky{
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HORIZONTE GRADIENTE ── */
+.horizon{
+  position: fixed;
+  bottom: 0; left: 0;
+  width: 100%; height: 55vh;
+  background: linear-gradient(
+    to top,
+    #e8703a 0%,
+    #c04a25 18%,
+    #8b2a1a 36%,
+    #55122a 55%,
+    #2b0e25 72%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── CONTENIDO ── */
+.page{
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 1.5rem 6rem;
+}
+
+/* ── HERO ── */
+.hero{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 0 2rem;
+}
+.hero-eyebrow{
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--sunset-peach);
+  opacity: 0;
+  animation: fadeUp 1s ease 0.3s forwards;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.hero h1{
+  font-size: clamp(42px, 9vw, 80px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--sunset-cream);
+  opacity: 0;
+  animation: fadeUp 1.1s ease 0.7s forwards;
+  margin-bottom: 0.4rem;
+}
+.hero h1 em{
+  font-style: italic;
+  color: var(--sunset-gold);
+  display: block;
+  font-size: 1.15em;
+}
+.hero-date{
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--sunset-peach);
+  letter-spacing: 0.15em;
+  opacity: 0;
+  animation: fadeUp 1s ease 1.1s forwards;
+  margin-top: 1.2rem;
+}
+.scroll-hint{
+  margin-top: 3.5rem;
+  opacity: 0;
+  animation: fadeUp 1s ease 2s forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.scroll-hint span{
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--sunset-peach);
+  opacity: 0.6;
+  text-transform: uppercase;
+}
+.scroll-arrow{
+  width: 1px; height: 48px;
+  background: linear-gradient(to bottom, var(--sunset-peach), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+/* ── DIVISOR ORNAMENTAL ── */
+.ornament{
+  text-align: center;
+  margin: 4rem 0 3rem;
+  color: var(--sunset-amber);
+  font-size: 18px;
+  letter-spacing: 0.4em;
+  opacity: 0.5;
+}
+
+/* ── SECCIONES ── */
+.section{
+  margin-bottom: 5rem;
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.section.visible{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-label{
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  color: var(--sunset-amber);
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::after{
+  content:'';
+  flex: 1;
+  height: 0.5px;
+  background: linear-gradient(to right, var(--sunset-amber), transparent);
+  opacity: 0.4;
+}
+
+.section h2{
+  font-size: clamp(26px, 5vw, 40px);
+  font-weight: 300;
+  line-height: 1.25;
+  color: var(--sunset-cream);
+  margin-bottom: 1.5rem;
+}
+.section h2 em{
+  font-style: italic;
+  color: var(--sunset-gold);
+}
+
+.section p{
+  font-size: 18px;
+  line-height: 1.85;
+  color: rgba(252,232,200,0.75);
+  margin-bottom: 1.2rem;
+  font-weight: 300;
+}
+.section p:last-child{margin-bottom:0}
+
+/* ── FOTO NASA ── */
+.photo-section{
+  margin-bottom: 5rem;
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.photo-section.visible{
+  opacity: 1;
+  transform: translateY(0);
+}
+.photo-frame{
+  position: relative;
+  border: 1px solid rgba(240,168,106,0.25);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.photo-frame::before{
+  content:'';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 60%,
+    rgba(26,10,0,0.7) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+.photo-frame img{
+  width: 100%;
+  display: block;
+  max-height: 480px;
+  object-fit: cover;
+  filter: sepia(20%) saturate(1.1);
+  transition: transform 6s ease;
+}
+.photo-frame:hover img{ transform: scale(1.03) }
+
+.photo-placeholder{
+  display: none;
+  align-items: center;
+  justify-content: center;
+  height: 260px;
+  background: rgba(139,58,26,0.15);
+  border: 1px dashed rgba(240,168,106,0.3);
+  border-radius: 4px;
+}
+.photo-placeholder p{
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--sunset-amber);
+  letter-spacing: 0.1em;
+  text-align: center;
+  opacity: 0.6;
+}
+.photo-caption{
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--sunset-peach);
+  letter-spacing: 0.1em;
+  text-align: center;
+  opacity: 0.5;
+}
+
+/* ── CITA CENTRAL ── */
+.quote-block{
+  margin: 5rem 0;
+  padding: 3rem 2.5rem;
+  border-top: 0.5px solid rgba(240,168,106,0.2);
+  border-bottom: 0.5px solid rgba(240,168,106,0.2);
+  text-align: center;
+  position: relative;
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.quote-block.visible{
+  opacity: 1;
+  transform: translateY(0);
+}
+.quote-block::before{
+  content: '"';
+  position: absolute;
+  top: -28px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 80px;
+  color: var(--sunset-amber);
+  opacity: 0.25;
+  font-family: var(--serif);
+  line-height: 1;
+}
+.quote-block p{
+  font-size: clamp(20px, 4vw, 28px);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--sunset-cream);
+  margin-bottom: 1.5rem;
+}
+.quote-firma{
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: var(--sunset-amber);
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+/* ── PIE ── */
+.footer{
+  text-align: center;
+  padding-top: 3rem;
+  border-top: 0.5px solid rgba(240,168,106,0.15);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.footer.visible{
+  opacity: 1;
+  transform: translateY(0);
+}
+.footer p{
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--sunset-amber);
+  opacity: 0.4;
+  text-transform: uppercase;
+}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to  {opacity:1;transform:translateY(0)}
+}
+@keyframes scrollPulse{
+  0%,100%{opacity:0.3;transform:scaleY(1)}
+  50%{opacity:0.8;transform:scaleY(1.2)}
+}
+
+@media(max-width:500px){
+  .quote-block{padding:2rem 1.25rem}
+  .section p{font-size:16px}
+}
